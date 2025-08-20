@@ -3,7 +3,7 @@ Built a workflow to automate online store order processing by integrating Webhoo
 
 ## Nodes & Features 
 
-✅ **Webhook Node:** to capture new orders
+✅ **Webhook Node:** to capture new orders  
 ✅ Stock check from **Google Sheets** (Inventory DB)
 ✅ **IF Node:** logic to handle stock availability
 ✅ **Gmail Node:** Auto-email to Inventory Manager for low stock
