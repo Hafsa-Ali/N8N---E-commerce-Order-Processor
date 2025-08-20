@@ -20,3 +20,5 @@ Before you start, make sure you have:
 ✅ **Google Sheet:** Packing list creation for fulfillment queue  
 ✅ **Slack Node:** Notification to warehouse/fulfillment team  
 
+## Workflow
+![image](<img width="865" height="320" alt="n8n E-commerce workflow" src="https://github.com/user-attachments/assets/0cc75dab-57b7-4440-8c96-999881674872" />)
