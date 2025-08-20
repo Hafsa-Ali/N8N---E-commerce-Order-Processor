@@ -1,0 +1,461 @@
+{
+  "name": "The E-commerce Order Processor",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "5c85a9be-9ee8-4b2e-9099-2ea7e9fd717c",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -624,
+        -64
+      ],
+      "id": "9d40dda9-2af3-42f6-8484-21d332288076",
+      "name": "Webhook – New Order Received",
+      "webhookId": "5c85a9be-9ee8-4b2e-9099-2ea7e9fd717c"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1JiVjOJC4X3yiffd98g-Mtqk33Wzumbaesnb7VA2iHPs",
+          "mode": "list",
+          "cachedResultName": "Inventory Check",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1JiVjOJC4X3yiffd98g-Mtqk33Wzumbaesnb7VA2iHPs/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Inventory_DB",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1JiVjOJC4X3yiffd98g-Mtqk33Wzumbaesnb7VA2iHPs/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Product ID",
+              "lookupValue": "={{ $json['body.items'].productId }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        32,
+        -64
+      ],
+      "id": "ce1c7e04-3be4-4509-a1ed-12f49ee60ffd",
+      "name": "Check Inventory",
+      "executeOnce": false,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "OJFGA3qnony89BYK",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "body.orderId, body.customer, body.items",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        -272,
+        -64
+      ],
+      "id": "9d982f80-3c01-4673-b2b3-8382bf240cc7",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "76e43521-76cb-49d4-a0a3-3cb42c69464f",
+              "leftValue": "={{ $json.Stock }}",
+              "rightValue": "={{ $('Split Out').item.json['body.items'].quantity }}",
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        416,
+        -64
+      ],
+      "id": "2b43b944-42bb-47ac-a9b2-3279011b2ff6",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1JiVjOJC4X3yiffd98g-Mtqk33Wzumbaesnb7VA2iHPs",
+          "mode": "list",
+          "cachedResultName": "Inventory Check",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1JiVjOJC4X3yiffd98g-Mtqk33Wzumbaesnb7VA2iHPs/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 332916114,
+          "mode": "list",
+          "cachedResultName": "Fulfillment Queue",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1JiVjOJC4X3yiffd98g-Mtqk33Wzumbaesnb7VA2iHPs/edit#gid=332916114"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "OrderID": "={{ $('Webhook – New Order Received').item.json.body.orderId }}",
+            "Customer": "={{ $('Webhook – New Order Received').item.json.body.customer }}",
+            "Packing List": "={{ $json.Product }} x {{ $('Split Out').item.json['body.items'].quantity }}",
+            "Date": "={{ $now }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "OrderID",
+              "displayName": "OrderID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Customer",
+              "displayName": "Customer",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Packing List",
+              "displayName": "Packing List",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Date",
+              "displayName": "Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        928,
+        -432
+      ],
+      "id": "d8e982d3-90fa-4c96-a9a5-5c7b43f843c6",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "OJFGA3qnony89BYK",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C09AXE13770",
+          "mode": "list",
+          "cachedResultName": "the-e-commerce-order-processor"
+        },
+        "text": "=:package: New Order Added to Fulfillment Queue!  \n\n*Order ID:* {{ $('Webhook – New Order Received').item.json.body.orderId }}  \n*Customer:* {{ $('Webhook – New Order Received').item.json.body.customer }}  \n*Product:* {{ $('Webhook – New Order Received').item.json.body.items[0].product }}  \n*Quantity:* {{ $('Webhook – New Order Received').item.json.body.items[0].quantity }}  \n*Packing List:* {{ $('Check Inventory').item.json.Product }} x {{ $('Split Out').item.json['body.items'].quantity }}\n*Date:* {{ $now }}",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        1200,
+        -176
+      ],
+      "id": "d6bac4d7-135d-473e-9ed6-ec2c19cb59ff",
+      "name": "Send a message",
+      "webhookId": "74ae0ce7-f596-4a43-a4af-a5fc843b68c9",
+      "credentials": {
+        "slackOAuth2Api": {
+          "id": "85sCPAxVsiBCodcM",
+          "name": "Slack account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "**Receives new orders from the online store with details like orderId, customer, items, and quantity**",
+        "height": 96
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -672,
+        96
+      ],
+      "id": "79c19a71-d61e-4457-90c3-2a0e997736a0",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "**Looks up the product in the inventory sheet and fetches available stock for the ordered item.**",
+        "height": 96,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -32,
+        96
+      ],
+      "id": "a230692e-2bf8-4a54-83df-282bd77fd7af",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "**Compares requested quantity vs available stock.**",
+        "height": 80,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        336,
+        96
+      ],
+      "id": "38a1e883-a9b5-43ad-9cc1-da8f046dcafd",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "**True → Enough stock available**",
+        "height": 80,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        608,
+        -192
+      ],
+      "id": "3919e591-f4f4-4c5e-a447-35ba98a65fca",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "sendTo": "shirayuki6978@gmail.com",
+        "subject": "Running Out Of Inventory",
+        "message": "=<h3>Dear Inventory Team,</h3>\n<h4>An order could not be fulfilled due to low stock</h4>.\n<ul>\n<li>📦 <b>Order ID:</b> {{ $('Webhook – New Order Received').item.json.body.orderId }}</li>\n<li>👤 <b>Customer:</b> {{ $('Webhook – New Order Received').item.json.body.customer }}</li>\n<li>🛒 <b>Product:</b> {{ $('Webhook – New Order Received').item.json.body.items[0].product }}</li>\n<li>🔢 <b>Requested Quantity:</b> {{ $('Webhook – New Order Received').item.json.body.items[0].quantity }}</li>\n<li>📉 <b>Available Stock:</b> {{ $('Check Inventory').item.json.Stock }}</li>\n</ul>\n<p><b>Action Required:</b> Please review and restock this item.</p>\n\nRegards,  \nn8n Workflow Bot",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        944,
+        304
+      ],
+      "id": "8915a520-ea5c-4aba-84d0-189c370ed4cb",
+      "name": "Send a message1",
+      "webhookId": "b703c834-9d56-428d-8435-45da7e1c918d",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "RaiuPAIoDr08N8DM",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "**False → Not enough stock**",
+        "height": 80,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        624,
+        176
+      ],
+      "id": "6ed67e41-b4e6-4945-8b51-f7809c2b63e9",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "**Creates a new record in the fulfillment queue with order details and a packing list.**",
+        "height": 96,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        848,
+        -560
+      ],
+      "id": "7cc7bc03-1cbe-4b83-981c-601534e1d773",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "**Sends a Slack message to the fulfillment team with new order details for packing & shipping**",
+        "height": 80,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1152,
+        0
+      ],
+      "id": "3a133ec8-b16f-455b-b986-bb7ffcdb8a77",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "content": "**If stock is insufficient, sends an email to the Inventory Manager with order details and current stock level.**",
+        "height": 96,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        896,
+        464
+      ],
+      "id": "6bfe2513-3108-4de3-9a34-409b32db6adc",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "content": "## The E-commerce Order Processor\n               ## By: Hafsa Ali",
+        "width": 448,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        80,
+        -512
+      ],
+      "id": "da114495-5583-4d53-9be0-11b274b4a70f",
+      "name": "Sticky Note8"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook – New Order Received": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Inventory": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Check Inventory",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send a message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "3a74e8dc-803d-4bf6-9b74-59157d95ecc6",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "b8704988c966c30783d757af15754fbe5db5db2dabe3dfb5558553272d77f9ec"
+  },
+  "id": "CImP1k1szAiQJIBA",
+  "tags": []
+}
