@@ -17,10 +17,6 @@ The input JSON contains order details such as order ID, customer name, and order
 *💡 Reminder: Paste this code in your Postman → Body → Raw*
 ### Example
 ```json
-
-## Workflow
-![image](https://github.com/user-attachments/assets/71d14b23-d422-4733-ba32-35afdfd8e991)  
-
 {
   "orderId": "ORD-3002",
   "customer": "Name of your choice",
@@ -29,6 +25,8 @@ The input JSON contains order details such as order ID, customer name, and order
   ]
 }
 ```
+## Workflow
+![image](https://github.com/user-attachments/assets/71d14b23-d422-4733-ba32-35afdfd8e991)  
 
 ## 📦 Order Fulfillment Workflow
 
