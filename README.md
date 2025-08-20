@@ -10,16 +10,17 @@ Before you start, make sure you have:
 📬 **Email credentials:** SMTP or Gmail node in n8n  
 💬 **Messaging app integration:** Slack/Discord/MS Teams    
 
-## Workflow
-![image](https://github.com/user-attachments/assets/71d14b23-d422-4733-ba32-35afdfd8e991)  
-
 ## 📝 Sample Input
 
 This workflow is triggered whenever a **new order** is received.  
-The input JSON contains order details such as order ID, customer name, and ordered items.
-Paste this code in your postman> body> raw
+The input JSON contains order details such as order ID, customer name, and ordered items.  
+*💡 Reminder: Paste this code in your Postman → Body → Raw*
 ### Example
 ```json
+
+## Workflow
+![image](https://github.com/user-attachments/assets/71d14b23-d422-4733-ba32-35afdfd8e991)  
+
 {
   "orderId": "ORD-3002",
   "customer": "Name of your choice",
