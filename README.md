@@ -6,7 +6,7 @@ Built a workflow to automate online store order processing by integrating Webhoo
 Before you start, make sure you have:  
 🛠️ **n8n** (self-hosted or cloud version)  
 📦 **Postman** (to simulate new order webhook triggers)  
-📑 **Google Sheets** (to store inventory data)  
+📑 **Google Sheets** (to store inventory data)  ([Inventory ](https://docs.n8n.io/))
 📬 **Email credentials** (SMTP or Gmail node in n8n)  
 💬 **Messaging app integration** (Slack/Discord/MS Teams)  
 
