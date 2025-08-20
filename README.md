@@ -1,4 +1,4 @@
-# N8N---E-commerce-Order-Processor
+# N8N-E-commerce-Order-Processor
 Built a workflow to automate online store order processing by integrating Webhook, Google Sheets, and Slack. Implemented inventory validation, conditional logic for stock issues, automated email alerts, packing list generation, and team notifications—reducing manual effort and streamlining fulfillment.
 
 ## ⚙️ Prerequisites
@@ -21,4 +21,5 @@ Before you start, make sure you have:
 ✅ **Slack Node:** Notification to warehouse/fulfillment team  
 
 ## Workflow
-![image]()
+![image](<img width="1730" height="640" alt="image" src="https://github.com/user-attachments/assets/71d14b23-d422-4733-ba32-35afdfd8e991" />
+)
