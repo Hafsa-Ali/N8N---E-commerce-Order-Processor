@@ -21,5 +21,4 @@ Before you start, make sure you have:
 ✅ **Slack Node:** Notification to warehouse/fulfillment team  
 
 ## Workflow
-![image](<img width="1730" height="640" alt="image" src="https://github.com/user-attachments/assets/71d14b23-d422-4733-ba32-35afdfd8e991" />
-)
+![image]("https://github.com/user-attachments/assets/71d14b23-d422-4733-ba32-35afdfd8e991")
