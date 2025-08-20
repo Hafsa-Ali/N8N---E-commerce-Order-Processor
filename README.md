@@ -13,6 +13,22 @@ Before you start, make sure you have:
 ## Workflow
 ![image](https://github.com/user-attachments/assets/71d14b23-d422-4733-ba32-35afdfd8e991)  
 
+## 📝 Sample Input
+
+This workflow is triggered whenever a **new order** is received.  
+The input JSON contains order details such as order ID, customer name, and ordered items.
+Paste this code in your postman> body> raw
+### Example
+```json
+{
+  "orderId": "ORD-3002",
+  "customer": "Name of your choice",
+  "items": [
+    { "productId": "P005", "product": "Bluetooth Headphones", "quantity": 25 }
+  ]
+}
+```
+
 ## 📦 Order Fulfillment Workflow
 
 | Step | Node | Purpose |
