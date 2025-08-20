@@ -44,3 +44,8 @@ The input JSON contains order details such as order ID, customer name, and order
 ✅ **TRUE branch** → Order added to queue + team notified  
 ❌ **FALSE branch** → Inventory Manager alerted for restock
 
+## 💡 Notes
+
+- Use a **Webhook or Form Trigger** to simulate feedback submissions.  
+- Ensure your **Google Sheet and Slack integrations** are properly connected.
+
